@@ -14,7 +14,7 @@ import klassen.SpielBean;
 public class Brett {
 	
 	public static boolean press=true;
-	static String[]x;	
+	static String[]x;
 	
 	public static String getHeader(){
 	return 
@@ -27,7 +27,7 @@ public class Brett {
 	"<link rel='stylesheet' type='text/css' href='style1.css'>"+
 	"<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>"+
 	"<script src='http://code.jquery.com/jquery-latest.min.js' type='text/javascript'></script>"+
-	"<script src='click.js'></script>"+
+//	"<script src='click.js'></script>"+
 	"<title>Spielbrett</title>"+
 	
 	"</head>" +
@@ -66,28 +66,20 @@ public class Brett {
 	
 	//------LaufKi------
 	s+="<form action='LaufKi' method='post'>";
-	s+="<input id='refresh' type = 'submit' value = 'Lauf Ki' name='laufKi'>";
+	if(Index.getGame().hatGewonnen()==true){
+		s+="<input disabled id='refresh' type = 'submit' value = 'Lauf Ki' name='laufKi'>";
+	}else{
+		s+="<input id='refresh' type = 'submit' value = 'Lauf Ki' name='laufKi'>";
+	}
 	s+="</form>";
 	s+="<br>";
 		
 	//------ZugBeenden------
-	s+="<form action='ZugBeenden' method='post'>";
-	s+="<input id='refresh' type = 'submit' value = 'Zug Beenden' name='zugBeenden'>";
-	s+="</form>";
-	s+="<br>";
-	
-	
-	
-	
-	
-	
-	
-	//--------beenden-----
 //	s+="<form action='Beenden' method='post'>";
 //	if(Index.getGame().ermittleSpielerAmZugFarbe().equals(Index.getGame().gibFarbeSession())&&Index.getGame().hatGewonnen()==false){
-//		s+="<input id='beenden' type = 'submit' value = 'Zug Beenden' name='beendenNormal'>";		
+//		s+="<input id='refresh' type = 'submit' value = 'Zug Beenden' name='beendenNormal'>";		
 //	}else{
-//		s+="<input disabled id='beenden' type = 'submit' value = 'Zug Beenden'>";
+//		s+="<input disabled id='refresh' type = 'submit' value = 'Zug Beenden'>";
 //	}
 //	s+="</form>";
 	
@@ -102,6 +94,11 @@ public class Brett {
 	public static  String getTable(){
 		String s="";
 		
+//		s+="<form action='Laufen' method='post'>";
+//		s+="<input type='hidden' id='hiddenField' value='' name='hid' >";
+//		s+="</form>";
+
+		
 		s+="<center><table width='550px' height='550px' border='1'>";
 		
 		int b=0;
@@ -109,42 +106,50 @@ public class Brett {
 			s+="<tr>";
 			for(int k=0;k<12;k++){
 				b++;
-				s+="<td onclick='myFunction("+b+")' width='35px' height='40px'>";
+				String fig="";
+				if(Index.getGame().hatGewonnen()==true){
+					fig="<a onclick='myFunction("+ b +")' href='javascript:;' class='active' >";
+				}else{
+					fig="<a onclick='myFunction("+ b +")' href='javascript:;'>";
+				}
+				
+				s+="<td width='35px' height='40px'>";
+	
 				if(b==2||b==4 ||b==6||b==8 ||b==10 ||b==12){
-					s+=link(updateFigur(b))+updateFigur(b)+"</a>";
+					s+=fig+updateFigur(b)+"</a>";
 				}
 				if(b==13||b==15||b==17||b==19||b==21||b==23){
-					s+=link(updateFigur(b))+updateFigur(b)+"</a>";
+					s+=fig+updateFigur(b)+"</a>";
 				}
 				if(b==26||b==28||b==30||b==32||b==34||b==36){
-					s+=link(updateFigur(b))+updateFigur(b)+"</a>";
+					s+=fig+updateFigur(b)+"</a>";
 				}
 				if(b==37||b==39||b==41||b==43||b==45||b==47){
-					s+=link(updateFigur(b))+updateFigur(b)+"</a>";
+					s+=fig+updateFigur(b)+"</a>";
 				}
 				if(b==50||b==52||b==54||b==56||b==58||b==60){
-					s+=link(updateFigur(b))+updateFigur(b)+"</a>";
+					s+=fig+updateFigur(b)+"</a>";
 				}
 				if(b==61||b==63||b==65||b==67||b==69||b==71){
-					s+=link(updateFigur(b))+updateFigur(b)+"</a>";
+					s+=fig+updateFigur(b)+"</a>";
 				}
 				if(b==74||b==76||b==78||b==80||b==82||b==84){
-					s+=link(updateFigur(b))+updateFigur(b)+"</a>";
+					s+=fig+updateFigur(b)+"</a>";
 				}
 				if(b==85||b==87||b==89||b==91||b==93||b==95){
-					s+=link(updateFigur(b))+updateFigur(b)+"</a>";
+					s+=fig+updateFigur(b)+"</a>";
 				}
 				if(b==98||b==100||b==102||b==104||b==106||b==108){
-					s+=link(updateFigur(b))+updateFigur(b)+"</a>";
+					s+=fig+updateFigur(b)+"</a>";
 				}
 				if(b==109||b==111||b==113||b==115||b==117||b==119){
-					s+=link(updateFigur(b))+updateFigur(b)+"</a>";
+					s+=fig+updateFigur(b)+"</a>";
 				}
 				if(b==122||b==124||b==126||b==128||b==130||b==132){
-					s+=link(updateFigur(b))+updateFigur(b)+"</a>";
+					s+=fig+updateFigur(b)+"</a>";
 				}
 				if(b==133||b==135||b==137||b==139||b==141||b==143){
-					s+=link(updateFigur(b))+updateFigur(b)+"</a>";
+					s+=fig+updateFigur(b)+"</a>";
 				}
 				s+= "</td>";
 			}
@@ -153,20 +158,14 @@ public class Brett {
 		
 		
 		s+="</table></center>";
+		s+="<script>";
+		s+="function myFunction(x){";
+//		s+="alert('cell index is: ' +  x);";
+		s+="var m=x;";
+		s+="window.location.replace('Laufen?m='+m);";
+		s+="}";
+		s+="</script>";
 		
-//		s+="<script>";
-//		s+="function myFunction(x){";
-//		System.out.println("alert('cell index is: ' +  x);");
-//		s+="var z=x;";
-//		String a=s+="z";
-//		request.getSession().setAttribute("b", a);
-//		s+="}";
-//		s+="</script>";
-		
-//		s+="<%";
-//		s+="Integer x=2;";
-//		s+="request.getSession().setAttribute('x', x);";
-//		s+="%>";
 		
 		
 		
@@ -208,15 +207,37 @@ public class Brett {
 		return au;
 	}
 	
-	public static String link(String im){
+	public static String link(String im,int l){
 		String fig="";
 		
-		if(im.equals("<img src='Bilder/schwarzerStein.png'>")){
-			fig="<a href='/DameLokalWeb/Laufen'>";
+		if(Index.getGame().hatGewonnen()==true){
+			 fig="<a onclick='myFunction("+l+")' href='javascript:;' class='active' >";
+		}else{
+//			if(Index.getGame().ermittleSpielerAmZugFarbe().equals("Schwarz")){
+				if(im.equals("<img src='Bilder/schwarzerStein.png'>")){
+					fig="<a onclick='myFunction("+l+")' href='javascript:;'>";
+				}
+				if(im.equals("<img src='Bilder/leererStein.png'>")){
+					fig="<a onclick='myFunction("+l+")' href='javascript:;'>";
+				}
+//				if(im.equals("<img src='Bilder/weissStein.png'>")){
+//					fig="<a onclick='myFunction("+l+")' href='javascript:;' class='active'>";
+//				}
+//			}else{
+//				if(im.equals("<img src='Bilder/schwarzerStein.png'>")){
+//					fig="<a onclick='myFunction("+l+")' href='javascript:;' class='active'>";
+//				}
+//				if(im.equals("<img src='Bilder/leererStein.png'>")){
+//					fig="<a onclick='myFunction("+l+")' href='javascript:;'>";
+//				}
+				if(im.equals("<img src='Bilder/weissStein.png'>")){
+					fig="<a onclick='myFunction("+l+")' href='javascript:;'>";
+				}
+//			}
+			
 		}
-		else if(im.equals("<img src='Bilder/weissStein.png'>")){
-			fig="<a href='/DameLokalWeb/Laufen'>";
-		}
+		
+		
 		return fig;
 	}
 	
@@ -226,6 +247,9 @@ public class Brett {
 		//----Schwarz------
 		if(Index.getGame().gibFigurWebId()[i]!=null&&Index.getGame().gibFigurWebId()[i]=="schwarz"){
 			o="<img src='Bilder/schwarzerStein.png'>";
+		}
+		else{
+			o="<img src='Bilder/leererStein.png'>";
 		}
 		
 		//-----Weiss-----

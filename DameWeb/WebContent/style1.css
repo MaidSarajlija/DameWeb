@@ -568,6 +568,11 @@ td{
 	height:50px;*/
 }
 
+a.active {
+	pointer-events: none;
+	cursor: default;
+}
+
 
 
 

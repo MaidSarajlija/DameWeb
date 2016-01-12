@@ -57,6 +57,9 @@ public interface iBediener {
 	void setFarbeWeb(String farbeWeb);
 	String getNameWeb();
 	void setNameWeb(String nameWeb);
+	String convertPos2(int s);
+	String gibFarbeSession();
+	Spielbrett getSpielbrett();
 
 
     

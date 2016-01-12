@@ -50,7 +50,7 @@ public class Wait extends HttpServlet {
 			
 			response.setContentType("text/html");
 			PrintWriter out = response.getWriter();
-			Index.getGame().starteSpiel();
+//			Index.getGame().starteSpiel();
 			try{
 				out.println(Brett.getHeader());
 				out.println(Brett.getMenu());

@@ -108,6 +108,7 @@ public class SpielBean implements iBediener, Serializable {
 		return figur;
 	}
 
+	@Override
 	public Spielbrett getSpielbrett() {
 		return spielbrett;
 	}
@@ -619,6 +620,7 @@ public class SpielBean implements iBediener, Serializable {
 		PrintStream ps = new PrintStream(baos);
 		PrintStream old = System.out;
 		System.setOut(ps);	
+		
 
 		spielbrett.getPositionen().clear();
 		this.datenSchlagen.clear();
@@ -939,8 +941,8 @@ public class SpielBean implements iBediener, Serializable {
 		spielbrett.Umwandler(aktPos);
 		spielbrett.Umwandler(zielPos);
 
-		for (int i = 0; i < spielbrett.getFelder().length; i++) {
-			for (int j = 0; j < spielbrett.getFelder()[i].length; j++) {
+//		for (int i = 0; i < spielbrett.getFelder().length; i++) {
+//			for (int j = 0; j < spielbrett.getFelder()[i].length; j++) {
 
 				// ObenRechts
 				if ((this.spielbrett.getPositionen().get(0) < this.spielbrett.getPositionen().get(2))
@@ -951,6 +953,7 @@ public class SpielBean implements iBediener, Serializable {
 						if ((nachbar.getFigur() != null) && (nachbar.getFigur().getFarbe().equals(FarbEnum.SCHWARZ))) {
 							System.out.println("Du kannst nicht weiter laufen weil die Spielfigur "+ nachbar.getFigur().getId()+ " auf dem Feld "+ nachbar.getId()
 											+ " deinen weg kreuzt.");
+							zugBeenden();
 							return;
 							// im Falle wenn eine gegnerische Figur auf dem Weg ist
 						} else if ((nachbar.getFigur() != null)&&(nachbar.getFigur().getFarbe().equals(FarbEnum.WEISS))) {
@@ -969,6 +972,7 @@ public class SpielBean implements iBediener, Serializable {
 										.println("Du kannst nicht schlagen weil die Figur "
 												+ nachbar2.getFigur().getId()
 												+ " dir im Weg steht.");
+								zugBeenden();
 								return;
 							}
 						}
@@ -993,6 +997,7 @@ public class SpielBean implements iBediener, Serializable {
 											+ " auf dem Feld "
 											+ nachbar.getId()
 											+ " deinen weg kreuzt.");
+							zugBeenden();
 							return;
 						} else if ((nachbar.getFigur() != null)
 								&& (nachbar.getFigur().getFarbe()
@@ -1013,6 +1018,7 @@ public class SpielBean implements iBediener, Serializable {
 										.println("Du kannst nicht schlagen weil die Figur "
 												+ nachbar2.getFigur().getId()
 												+ " dir im Weg steht.");
+								zugBeenden();
 								return;
 							}
 						}
@@ -1037,6 +1043,7 @@ public class SpielBean implements iBediener, Serializable {
 											+ " auf dem Feld "
 											+ nachbar.getId()
 											+ " deinen weg kreuzt.");
+							zugBeenden();
 							return;
 						} else if ((nachbar.getFigur() != null)
 								&& (nachbar.getFigur().getFarbe()
@@ -1057,6 +1064,7 @@ public class SpielBean implements iBediener, Serializable {
 										.println("Du kannst nicht schlagen weil die Figur "
 												+ nachbar2.getFigur().getId()
 												+ " dir im Weg steht.");
+								zugBeenden();
 								return;
 							}
 						}
@@ -1081,6 +1089,7 @@ public class SpielBean implements iBediener, Serializable {
 											+ " auf dem Feld "
 											+ nachbar.getId()
 											+ " deinen weg kreuzt.");
+							zugBeenden();
 							return;
 						} else if ((nachbar.getFigur() != null)
 								&& (nachbar.getFigur().getFarbe()
@@ -1101,6 +1110,7 @@ public class SpielBean implements iBediener, Serializable {
 										.println("Du kannst nicht schlagen weil die Figur "
 												+ nachbar2.getFigur().getId()
 												+ " dir im Weg steht.");
+								zugBeenden();
 								return;
 							}
 						}
@@ -1110,8 +1120,8 @@ public class SpielBean implements iBediener, Serializable {
 					}
 
 				}
-			}
-		}
+//			}
+//		}
 		zugBeenden();
 			
 		System.out.flush();
@@ -1133,8 +1143,8 @@ public class SpielBean implements iBediener, Serializable {
 		spielbrett.Umwandler(aktPos);
 		spielbrett.Umwandler(zielPos);
 
-		for (int i = 0; i < spielbrett.getFelder().length; i++) {
-			for (int j = 0; j < spielbrett.getFelder()[i].length; j++) {
+//		for (int i = 0; i < spielbrett.getFelder().length; i++) {
+//			for (int j = 0; j < spielbrett.getFelder()[i].length; j++) {
 
 				// ObenRechts
 				if ((this.spielbrett.getPositionen().get(0) < this.spielbrett
@@ -1152,6 +1162,7 @@ public class SpielBean implements iBediener, Serializable {
 											+ " auf dem Feld "
 											+ nachbar.getId()
 											+ " deinen weg kreuzt.");
+							zugBeenden();
 							return;
 						} else if ((nachbar.getFigur() != null)
 								&& (nachbar.getFigur().getFarbe()
@@ -1172,6 +1183,7 @@ public class SpielBean implements iBediener, Serializable {
 										.println("Du kannst nicht schlagen weil die Figur "
 												+ nachbar2.getFigur().getId()
 												+ " dir im Weg steht.");
+								zugBeenden();
 								return;
 							}
 						}
@@ -1196,6 +1208,7 @@ public class SpielBean implements iBediener, Serializable {
 											+ " auf dem Feld "
 											+ nachbar.getId()
 											+ " deinen weg kreuzt.");
+							zugBeenden();
 							return;
 						} else if ((nachbar.getFigur() != null)
 								&& (nachbar.getFigur().getFarbe()
@@ -1216,6 +1229,7 @@ public class SpielBean implements iBediener, Serializable {
 										.println("Du kannst nicht schlagen weil die Figur "
 												+ nachbar2.getFigur().getId()
 												+ " dir im Weg steht.");
+								zugBeenden();
 								return;
 							}
 						}
@@ -1240,6 +1254,7 @@ public class SpielBean implements iBediener, Serializable {
 											+ " auf dem Feld "
 											+ nachbar.getId()
 											+ " deinen weg kreuzt.");
+							zugBeenden();
 							return;
 						} else if ((nachbar.getFigur() != null)
 								&& (nachbar.getFigur().getFarbe()
@@ -1260,6 +1275,7 @@ public class SpielBean implements iBediener, Serializable {
 										.println("Du kannst nicht schlagen weil die Figur "
 												+ nachbar2.getFigur().getId()
 												+ " dir im Weg steht.");
+								zugBeenden();
 								return;
 							}
 						}
@@ -1284,6 +1300,7 @@ public class SpielBean implements iBediener, Serializable {
 											+ " auf dem Feld "
 											+ nachbar.getId()
 											+ " deinen weg kreuzt.");
+							zugBeenden();
 							return;
 						} else if ((nachbar.getFigur() != null)
 								&& (nachbar.getFigur().getFarbe()
@@ -1304,6 +1321,7 @@ public class SpielBean implements iBediener, Serializable {
 										.println("Du kannst nicht schlagen weil die Figur "
 												+ nachbar2.getFigur().getId()
 												+ " dir im Weg steht.");
+								zugBeenden();
 								return;
 							}
 						}
@@ -1313,8 +1331,8 @@ public class SpielBean implements iBediener, Serializable {
 					}
 
 				}
-			}
-		}
+//			}
+//		}
 		zugBeenden();
 		
 		
@@ -2064,9 +2082,16 @@ public class SpielBean implements iBediener, Serializable {
 
 	}
 	
+	@Override
 	public void farbeSession(String farbeSess){
 		farbe=farbeSess;
 	}
+	
+	@Override
+	public String gibFarbeSession(){
+		return farbe;
+	}
+	
 	
 	@Override
 	public String ermittleSpielerAmZugFarbe(){
@@ -2331,6 +2356,244 @@ public class SpielBean implements iBediener, Serializable {
 			return i;
 		case "A11":
 			i=143;
+			return i;
+		
+		}
+		return i;
+	}
+	
+	@Override
+	public String convertPos2(int s){
+		String i=null;
+		
+		switch(s){
+		//--------------L---------------
+		case 2:
+			i="L2";
+			return i;
+		case 4:
+			i="L4";
+			return i;
+		case 6:
+			i="L6";
+			return i;
+		case 8:
+			i="L8";
+			return i;
+		case 10:
+			i="L10";
+			return i;
+		case 12:
+			i="L12";
+			return i;
+		//--------------K---------------
+		case 13:
+			i="K1";
+			return i;
+		case 15:
+			i="K3";
+			return i;
+		case 17:
+			i="K5";
+			return i;
+		case 19:
+			i="K7";
+			return i;
+		case 21:
+			i="K9";
+			return i;
+		case 23:
+			i="K11";
+			return i;
+		//--------------J---------------
+		case 26:
+			i="J2";
+			return i;
+		case 28:
+			i="J4";
+			return i;
+		case 30:
+			i="J6";
+			return i;
+		case 32:
+			i="J8";
+			return i;
+		case 34:
+			i="J10";
+			return i;
+		case 36:
+			i="J12";
+			return i;
+		//--------------I---------------
+		case 37:
+			i="I1";
+			return i;
+		case 39:
+			i="I3";
+			return i;
+		case 41:
+			i="I5";
+			return i;
+		case 43:
+			i="I7";
+			return i;
+		case 45:
+			i="I9";
+			return i;
+		case 47:
+			i="I11";
+			return i;
+		//--------------H---------------
+		case 50:
+			i="H2";
+			return i;
+		case 52:
+			i="H4";
+			return i;
+		case 54:
+			i="H6";
+			return i;
+		case 56:
+			i="H8";
+			return i;
+		case 58:
+			i="H10";
+			return i;
+		case 60:
+			i="H12";
+			return i;
+		//--------------G---------------
+		case 61:
+			i="G1";
+			return i;
+		case 63:
+			i="G3";
+			return i;
+		case 65:
+			i="G5";
+			return i;
+		case 67:
+			i="G7";
+			return i;
+		case 69:
+			i="G9";
+			return i;
+		case 71:
+			i="G11";
+			return i;
+		//--------------F---------------
+		case 74:
+			i="F2";
+			return i;
+		case 76:
+			i="F4";
+			return i;
+		case 78:
+			i="F6";
+			return i;
+		case 80:
+			i="F8";
+			return i;
+		case 82:
+			i="F10";
+			return i;
+		case 84:
+			i="F12";
+			return i;
+		//--------------E---------------
+		case 85:
+			i="E1";
+			return i;
+		case 87:
+			i="E3";
+			return i;
+		case 89:
+			i="E5";
+			return i;
+		case 91:
+			i="E7";
+			return i;
+		case 93:
+			i="E9";
+			return i;
+		case 95:
+			i="E11";
+			return i;
+		//--------------D---------------
+		case 98:
+			i="D2";
+			return i;
+		case 100:
+			i="D4";
+			return i;
+		case 102:
+			i="D6";
+			return i;
+		case 104:
+			i="D8";
+			return i;
+		case 106:
+			i="D10";
+			return i;
+		case 108:
+			i="D12";
+			return i;
+		//--------------C---------------
+		case 109:
+			i="C1";
+			return i;
+		case 111:
+			i="C3";
+			return i;
+		case 113:
+			i="C5";
+			return i;
+		case 115:
+			i="C7";
+			return i;
+		case 117:
+			i="C9";
+			return i;
+		case 119:
+			i="C11";
+			return i;
+		//--------------B---------------
+		case 122:
+			i="B2";
+			return i;
+		case 124:
+			i="B4";
+			return i;
+		case 126:
+			i="B6";
+			return i;
+		case 128:
+			i="B8";
+			return i;
+		case 130:
+			i="B10";
+			return i;
+		case 132:
+			i="B12";
+			return i;
+		//--------------A---------------
+		case 133:
+			i="A1";
+			return i;
+		case 135:
+			i="A3";
+			return i;
+		case 137:
+			i="A5";
+			return i;
+		case 139:
+			i="A7";
+			return i;
+		case 141:
+			i="A9";
+			return i;
+		case 143:
+			i="A11";
 			return i;
 		
 		}

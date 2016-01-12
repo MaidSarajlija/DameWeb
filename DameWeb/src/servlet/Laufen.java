@@ -2,7 +2,10 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,7 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/Laufen")
 public class Laufen extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	private ArrayList<Integer>datenLaufenWeb=new ArrayList<Integer>();
+	private static final String brett = "/Brett.jsp";
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -35,11 +40,17 @@ public class Laufen extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		Index.getGame().laufen(aktPos, zielPos);
-//		System.out.println(Index.getGame().getZelle().get(0));
-//		int b=(int)request.getSession().getAttribute("b");
-//		System.out.println("tra: "+request.getSession().getAttribute("x"));
-		System.out.println("tra: "+request.getSession().getAttribute("b"));
+		ServletContext sc = this.getServletContext();
+		RequestDispatcher rd = sc.getRequestDispatcher(brett);
+		
+		int feld1=Integer.parseInt(request.getParameter("m"));
+		datenLaufenWeb.add(feld1);
+		if(datenLaufenWeb.size()==2){
+			Index.getGame().laufen(Index.getGame().convertPos2(datenLaufenWeb.get(0)),Index.getGame().convertPos2(datenLaufenWeb.get(1)));
+			datenLaufenWeb.clear();
+		}
+		
+//		rd.forward(request, response);
 		
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();

@@ -3,6 +3,8 @@ package servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,13 +17,14 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/Refresh")
 public class Refresh extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+
+	private static final String brett = "/Brett.jsp";
        
     /**
      * @see HttpServlet#HttpServlet()
      */
     public Refresh() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -35,7 +38,9 @@ public class Refresh extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+
+		ServletContext sc = this.getServletContext();
+		RequestDispatcher rd = sc.getRequestDispatcher(brett);
 //		if(request.getParameter("refreshLaden")!=null){
 //			
 //			SpielerLadenWeb.getGameLaden().farbeSession(SpielerLadenWeb.getGameLaden().ermittleSpielerAmZugFarbe());
@@ -68,6 +73,8 @@ public class Refresh extends HttpServlet {
 			if(farbeNext==null){
 				Brett.press=true;
 			}
+			
+//			rd.forward(request, response);
 			
 			
 			response.setContentType("text/html");
