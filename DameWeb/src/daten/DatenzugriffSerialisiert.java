@@ -6,66 +6,70 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Properties;
+import java.io.Serializable;
 
 import klassen.SpielBean;
-import klassen.Spieler;
 
-public class DatenzugriffSerialisiert implements iDatenzugriff {
-	private ObjectOutputStream oos;
-	private ObjectInputStream ois;
-	private boolean lesend = false;
 
-	@Override
-	public void oeffnen(Properties p) throws IOException {
-		try {
-			if (lesend) {
-				ois = new ObjectInputStream(new FileInputStream("datei.ser"));
-			} else {
-				oos = new ObjectOutputStream(new FileOutputStream("datei.ser"));
-			}
-		} catch (FileNotFoundException e) {
-			System.err.println("File not found");
-		}
+public class DatenzugriffSerialisiert implements iDatenzugriff, Serializable {
 
-	}
-
-	@Override
-	public void schreiben(Object object) throws IOException {
-		try{
-		oos.writeObject(object);
-		}
-		catch(FileNotFoundException e){
-			System.err.println("Konnte Datei nicht erzeugen");
-		}catch (Exception e){
-			System.err.println("Fehler beim Schliessen");
-		}
-	}
-
-	@Override
-	public Object lesen() throws IOException {
-		if (ois == null) {
-			throw new RuntimeException("Der Reader ist nicht offen");
-		}
-		try {
-			return ois.readObject();
-		} catch (ClassNotFoundException e) {
-			System.err.println("Fehler bei Ein-/Ausgabe: " + e);
-			return null;
-		}
-	}
-
-	@Override
-	public void schliessen(Object object) throws IOException {
-		if (oos != null) {
-			oos.close();
-			oos = null;
-		}
-
-		if (ois != null) {
-			ois.close();
-			ois = null;
-		}
-	}
+	private ObjectOutputStream oos = null;
 	
+	
+	
+	/**
+	 * Die Methode speichern, um das Spiel serialisiert zu speichern
+	 */
+	@Override
+	public void speichern(Object spiel, String fileAddressSave){
+
+		if(spiel != null && spiel instanceof SpielBean){
+			
+		}else{
+			throw new RuntimeException("Das zu speichernde Objekt ist nicht vom Typ Spiel!");
+		}
+		
+		try{
+			oos = new ObjectOutputStream(new FileOutputStream(fileAddressSave));
+			oos.writeObject(spiel);
+		} catch(FileNotFoundException e){
+			System.err.println("Datei konnte nicht erstellt werden!");
+		} catch (IOException e) {
+			System.err.println("Fehler bei Ein-/Ausgabe: " + e);
+		}
+		finally{
+			try{
+				oos.close();
+			}catch(Exception e){
+				System.err.println("Fehler beim Schliessen!");
+			}
+		}
+	}
+	/**
+	 * Die Methode laden, um das Spiel zu de-serialisieren
+	 */
+
+
+	@Override
+	public Object laden(String fileAddressLoad) {
+		ObjectInputStream ois = null;
+		SpielBean geladenesSpiel = null;
+				try{
+					ois=new ObjectInputStream(new FileInputStream((fileAddressLoad)));
+					geladenesSpiel = (SpielBean)ois.readObject();
+				}catch(FileNotFoundException e){
+					System.err.println("Datei konnte nicht geladen werden!");
+				} catch (IOException e) {
+					System.err.println("Fehler bei Ein-/Ausgabe: " + e);
+			} catch (ClassNotFoundException e) {
+					System.err.println("Datei enthaelt kein Objekt von Typ Spiel!");
+				}finally{
+				try{
+					ois.close();
+				}catch(Exception e){
+					System.err.println("Fehler beim Schliessen!");
+				}
+			}
+			return geladenesSpiel;
+		}
 }

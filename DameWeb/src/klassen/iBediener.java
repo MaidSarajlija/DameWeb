@@ -22,20 +22,13 @@ public interface iBediener {
 
     
     void zugBeenden();
-    
-    void speichernCSV(String dateiname);
-    SpielBean lesenCSV(String s);
-    void speichernSerial(String s);
-    SpielBean ladenSerial(String s);
-
+  
     void schlagen(String aktPos, String gegnerPos, String zielPos);
 
 
     boolean hatGewonnen();
     public Spieler getSpieler1();
     public Spieler getSpieler2();
-	Object laden(String name, String typ) throws IOException;
-	void speichern(Object obj, String name) throws IOException;
 	
 	String farbePlayer();
 	void laufen(String aktPos, String zielPos);
