@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 
+import javax.xml.bind.JAXBException;
+
 import klassen.FarbEnum;
 import klassen.SpielBean;
 import klassen.Spieler;
@@ -15,7 +17,7 @@ public class TestSpielSpeichern implements  Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public static void main(String []args) throws IOException{
+	public static void main(String []args) throws IOException, JAXBException{
 
 	
 	

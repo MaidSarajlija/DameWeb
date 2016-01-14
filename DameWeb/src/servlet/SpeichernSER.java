@@ -8,6 +8,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.JAXBException;
+
+import daten.DatenzugriffSerialisiert;
+import daten.iDatenzugriff;
 
 
 /**
@@ -42,7 +46,12 @@ public class SpeichernSER extends HttpServlet {
 		
 		if(Index.getGame()!=null){
 			
-			ser.speichern("/Users/sevenvista/Desktop/"+ namefile, Index.getGame());
+			try {
+				ser.speichern(Index.getGame(),"C:/Users/Katherina/Desktop"+ namefile);
+			} catch (JAXBException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			response.setContentType("text/html");
 			PrintWriter out = response.getWriter();
@@ -57,21 +66,26 @@ public class SpeichernSER extends HttpServlet {
 			}
 			
 		}else if(SpielerLadenWeb.getGameLaden()!=null){
-			ser.speichern("/Users/sevenvista/Desktop/"+ namefile, SpielerLadenWeb.getGameLaden());
+			try {
+				ser.speichern(SpielerLadenWeb.getGameLaden(),"C:/Users/Katherina/Desktop"+ namefile);
+			} catch (JAXBException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			response.setContentType("text/html");
 			PrintWriter out = response.getWriter();
 			try{
-				out.println(BrettLaden.getHeader());
-				out.println(BrettLaden.getMenu());
-				out.println(BrettLaden.getTable());
-				out.println(BrettLaden.getMenuEnd());
+				out.println(Brett.getHeader());
+				out.println(Brett.getMenu());
+				out.println(Brett.getTable());
+				out.println(Brett.getMenuEnd());
 			}finally{
-				out.println(BrettLaden.getFooter());
+				out.println(Brett.getFooter());
 				out.close();
 			}
 		}
 		
 	}
 
-}
+	}

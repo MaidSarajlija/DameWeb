@@ -10,6 +10,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.JAXBException;
+
+import daten.datenzugriffPDF;
+import daten.iDatenzugriff;
 
 
 
@@ -37,11 +41,16 @@ public class SpeichernPDF extends HttpServlet {
 		String namefile =request.getParameter("textareaPDF");
 		request.getSession().setAttribute("filePDF", namefile);
 		
-		iDatenzugriff pdf= new DatenzugriffPDF();
+		iDatenzugriff pdf= new datenzugriffPDF();
 		
 		if(Index.getGame()!=null){
 			
-			pdf.speichern("/Users/sevenvista/Desktop/"+ namefile, Index.getGame());
+			try {
+				pdf.speichern(Index.getGame(),"/Users/sevenvista/Desktop/"+ namefile);
+			} catch (JAXBException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			response.setContentType("text/html");
 			PrintWriter out = response.getWriter();
@@ -56,17 +65,22 @@ public class SpeichernPDF extends HttpServlet {
 			}
 			
 		}else if(SpielerLadenWeb.getGameLaden()!=null){
-			pdf.speichern("/Users/sevenvista/Desktop/"+ namefile, SpielerLadenWeb.getGameLaden());
+			try {
+				pdf.speichern(SpielerLadenWeb.getGameLaden(),"/Users/sevenvista/Desktop/"+ namefile);
+			} catch (JAXBException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			response.setContentType("text/html");
 			PrintWriter out = response.getWriter();
 			try{
-				out.println(BrettLaden.getHeader());
-				out.println(BrettLaden.getMenu());
-				out.println(BrettLaden.getTable());
-				out.println(BrettLaden.getMenuEnd());
+				out.println(Brett.getHeader());
+				out.println(Brett.getMenu());
+				out.println(Brett.getTable());
+				out.println(Brett.getMenuEnd());
 			}finally{
-				out.println(BrettLaden.getFooter());
+				out.println(Brett.getFooter());
 				out.close();
 			}
 		}

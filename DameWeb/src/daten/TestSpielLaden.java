@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 
+import javax.xml.bind.JAXBException;
+
 import klassen.SpielBean;
 import klassen.Spielbrett;
 import klassen.Spieler;
@@ -19,7 +21,7 @@ public class TestSpielLaden implements  Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 
-public static void main(String []args) throws ClassNotFoundException, FileNotFoundException, IOException{
+public static void main(String []args) throws ClassNotFoundException, FileNotFoundException, IOException, JAXBException{
 
 	iDatenzugriff d;
 //	d= new DatenzugriffSerialisiert();

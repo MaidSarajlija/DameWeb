@@ -3,11 +3,13 @@ package servlet;
 import java.io.IOException;
 //import java.io.PrintWriter;
 
-import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
+
+import klassen.SpielBean;
 
 
 
@@ -17,6 +19,7 @@ import javax.servlet.http.*;
 @WebServlet("/Login")
 public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	public String[]x;
 	
 	private static final String Wait = "/Wait.jsp";
 	private static final String brett = "/Brett.jsp";
@@ -58,86 +61,17 @@ public class Login extends HttpServlet {
 		request.getSession().setAttribute("farbe1", farbe);
 		Index.getGame().setFarbeWeb(farbe);
 		
-//		String s="";
-//		if(Index.getGame().hatGewonnen()==true){
-//			s+="<input disabled id='refresh' type = 'submit' value = 'Lauf Ki' name='laufKi'>";
-//		}else{
-//			s+="<input id='refresh' type = 'submit' value = 'Lauf Ki' name='laufKi'>";
-//		}
-//		request.getSession().setAttribute("laufKI", s);
-		
-		
-		
 		Index.getGame().addSpieler(name, Index.getGame().bestimmeFarbe(farbe), Index.getGame().bestimmeKI(typ1));
+		
+		
 		
 		if(typ2.equals("KI")){
 			Index.getGame().addSpieler("Computer", Index.getGame().bestimmeFarbe(this.farbeKI(request, response)), Index.getGame().bestimmeKI("KI"));
-			this.tableGame(request, response);
+			Index.getGame().starteSpiel();
 			
-//			Index.getGame().starteSpiel();
+			this.brettRufen(request, response);
 			
-//			int b=0;
-//			for(int i=0;i<12;i++){
-//				for(int k=0;k<12;k++){
-//					b++;
-//					String fig="";
-//					if(Index.getGame().hatGewonnen()==true){
-//						fig="<a onclick='myFunction("+b+")' href='javascript:;' class='active' >";
-//					}
-//					request.getSession().setAttribute("link", fig);
-//					if(b==2||b==4 ||b==6||b==8 ||b==10 ||b==12){
-//						String update=this.updateFigur(b);
-//						request.getSession().setAttribute("fig", update);
-//					}
-//					if(b==13||b==15||b==17||b==19||b==21||b==23){
-//						String update=this.updateFigur(b);
-//						request.getSession().setAttribute("fig", update);
-//					}
-//					if(b==26||b==28||b==30||b==32||b==34||b==36){
-//						String update=this.updateFigur(b);
-//						request.getSession().setAttribute("fig", update);
-//					}
-//					if(b==37||b==39||b==41||b==43||b==45||b==47){
-//						String update=this.updateFigur(b);
-//						request.getSession().setAttribute("fig", update);
-//					}
-//					if(b==50||b==52||b==54||b==56||b==58||b==60){
-//						String update=this.updateFigur(b);
-//						request.getSession().setAttribute("fig", update);
-//					}
-//					if(b==61||b==63||b==65||b==67||b==69||b==71){
-//						String update=this.updateFigur(b);
-//						request.getSession().setAttribute("fig", update);
-//					}
-//					if(b==74||b==76||b==78||b==80||b==82||b==84){
-//						String update=this.updateFigur(b);
-//						request.getSession().setAttribute("fig", update);
-//					}
-//					if(b==85||b==87||b==89||b==91||b==93||b==95){
-//						String update=this.updateFigur(b);
-//						request.getSession().setAttribute("fig", update);
-//					}
-//					if(b==98||b==100||b==102||b==104||b==106||b==108){
-//						String update=this.updateFigur(b);
-//						request.getSession().setAttribute("fig", update);
-//					}
-//					if(b==109||b==111||b==113||b==115||b==117||b==119){
-//						String update=this.updateFigur(b);
-//						request.getSession().setAttribute("fig", update);
-//					}
-//					if(b==122||b==124||b==126||b==128||b==130||b==132){
-//						String update=this.updateFigur(b);
-//						request.getSession().setAttribute("fig", update);
-//					}
-//					if(b==133||b==135||b==137||b==139||b==141||b==143){
-//						String update=this.updateFigur(b);
-//						request.getSession().setAttribute("fig", update);
-//					}
-//				}
-//			}
-			
-			
-//			rd1.forward(request, response);
+			rd1.forward(request, response);
 		}else{
 			rd.forward(request, response);
 		}
@@ -148,20 +82,7 @@ public class Login extends HttpServlet {
 		
 	}
 	
-	public void tableGame(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
-		response.setContentType("text/html");
-		PrintWriter out = response.getWriter();
-		Index.getGame().starteSpiel();
-		try{
-			out.println(Brett.getHeader());
-			out.println(Brett.getMenu());
-			out.println(Brett.getTable());
-			out.println(Brett.getMenuEnd());
-		}finally{
-			out.println(Brett.getFooter());
-			out.close();
-		}
-	}
+
 	
 	public String farbeKI(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
 		String farbe = request.getParameter("farbeSpieler");
@@ -173,6 +94,321 @@ public class Login extends HttpServlet {
 		}
 		return farbeKI;
 		
+	}
+	
+	public void brettRufen(HttpServletRequest request, HttpServletResponse response){
+		String s="";
+		if(Index.getGame().hatGewonnen()==true){
+			s+="<input disabled id='refresh' type = 'submit' value = 'Lauf Ki' name='laufKi'>";
+		}else{
+			s+="<input id='refresh' type = 'submit' value = 'Lauf Ki' name='laufKi'>";
+		}
+		request.getSession().setAttribute("laufKI", s);
+		
+		
+		ArrayList<String> ausgabe=this.ausgabe();
+		request.getSession().setAttribute("ausgabe", ausgabe);
+		
+		int b=0;
+		for(int i=0;i<12;i++){
+			for(int k=0;k<12;k++){
+				b++;
+				String fig="";
+				if(Index.getGame().hatGewonnen()==true){
+					fig="<a onclick='myFunction("+b+")' href='javascript:;' class='active' >";
+				}
+				request.getSession().setAttribute("link", fig);
+				
+				if(b==2){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig1", update);
+				}
+				if(b==4){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig2", update);
+				}
+				if(b==6){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig3", update);
+				}
+				if(b==8){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig4", update);
+				}
+				if(b==10){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig5", update);
+				}
+				if(b==12){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig6", update);
+				}
+				if(b==13){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig7", update);
+				}
+				if(b==15){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig8", update);
+				}
+				if(b==17){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig9", update);
+				}
+				if(b==19){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig10", update);
+				}
+				if(b==21){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig11", update);
+				}
+				if(b==23){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig12", update);
+				}
+				if(b==26){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig13", update);
+				}
+				if(b==28){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig14", update);
+				}
+				if(b==30){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig15", update);
+				}
+				if(b==32){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig16", update);
+				}
+				if(b==34){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig17", update);
+				}
+				if(b==36){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig18", update);
+				}
+				if(b==37){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig19", update);
+				}
+				if(b==39){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig20", update);
+				}
+				if(b==41){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig21", update);
+				}
+				if(b==43){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig22", update);
+				}
+				if(b==45){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig23", update);
+				}
+				if(b==47){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig24", update);
+				}
+				if(b==50){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig25", update);
+				}
+				if(b==52){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig26", update);
+				}
+				if(b==54){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig27", update);
+				}
+				if(b==56){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig28", update);
+				}
+				if(b==58){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig29", update);
+				}
+				if(b==60){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig30", update);
+				}
+				if(b==61){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig31", update);
+				}
+				if(b==63){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig32", update);
+				}
+				if(b==65){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig33", update);
+				}
+				if(b==67){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig34", update);
+				}
+				if(b==69){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig35", update);
+				}
+				if(b==71){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig36", update);
+				}
+				if(b==74){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig37", update);
+				}
+				if(b==76){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig38", update);
+				}
+				if(b==78){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig39", update);
+				}
+				if(b==80){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig40", update);
+				}
+				if(b==82){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig41", update);
+				}
+				if(b==84){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig42", update);
+				}
+				if(b==85){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig43", update);
+				}
+				if(b==87){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig44", update);
+				}
+				if(b==89){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig45", update);
+				}
+				if(b==91){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig46", update);
+				}
+				if(b==93){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig47", update);
+				}
+				if(b==95){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig48", update);
+				}
+				if(b==98){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig49", update);
+				}
+				if(b==100){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig50", update);
+				}
+				if(b==102){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig51", update);
+				}
+				if(b==104){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig52", update);
+				}
+				if(b==106){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig53", update);
+				}
+				if(b==108){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig54", update);
+				}
+				if(b==109){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig55", update);
+				}
+				if(b==111){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig56", update);
+				}
+				if(b==113){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig57", update);
+				}
+				if(b==115){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig58", update);
+				}
+				if(b==117){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig59", update);
+				}
+				if(b==119){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig60", update);
+				}
+				if(b==122){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig61", update);
+				}
+				if(b==124){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig62", update);
+				}
+				if(b==126){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig63", update);
+				}
+				if(b==128){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig64", update);
+				}
+				if(b==130){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig65", update);
+				}
+				if(b==132){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig66", update);
+				}
+				if(b==133){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig67", update);
+				}
+				if(b==135){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig68", update);
+				}
+				if(b==137){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig69", update);
+				}
+				if(b==139){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig70", update);
+				}
+				if(b==141){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig71", update);
+				}
+				if(b==143){
+					String update=this.updateFigur(b);
+					request.getSession().setAttribute("fig72", update);
+				}
+			}
+		}
 	}
 	
 	public String updateFigur(int i){
@@ -193,6 +429,18 @@ public class Login extends HttpServlet {
 		}
 		return o;
 		
+	}
+	
+	public ArrayList<String> ausgabe(){
+		
+		ArrayList<String>au=new ArrayList<String>();
+		x=SpielBean.baos.toString().split("\n");
+		
+		for(int i=x.length-1;i>=0;i--){
+			au.add(x[i]+("\n"));
+		}
+		
+		return au;
 	}
 	
 

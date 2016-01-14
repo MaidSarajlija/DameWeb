@@ -2461,5 +2461,34 @@ public class SpielBean implements iBediener, Serializable {
 		}
 		return i;
 	}
+	
+	@Override	
+	public int bestandSpielerlist(){
+		
+		int i=0;
+		if(spieler1!=null && spieler2!=null){
+			i=2;
+			return i;
+		}
+		else if(spieler1!=null || spieler2!=null){
+			i=1;
+			return i;
+		}
+	else{
+		return i;
+	}
+}   
+	
+	
+	@Override
+	public boolean menschDrin(){
+		if(this.bestandSpielerlist()==2){
+			if(spieler1.getKi()!=null){
+				return false;
+			}
+		}
+		return true;
+	}
+
 
 }

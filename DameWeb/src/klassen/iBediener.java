@@ -53,6 +53,9 @@ public interface iBediener {
 	String convertPos2(int s);
 	String gibFarbeSession();
 	Spielbrett getSpielbrett();
+	boolean menschDrin();
+	int bestandSpielerlist();
+
 
 
     
