@@ -8,7 +8,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.JAXBException;
 
+import klassen.SpielBean;
 import daten.DatenzugriffCSV;
 import daten.datenzugriffPDF;
 import daten.iDatenzugriff;
@@ -41,11 +43,16 @@ public class SpeichernCSV extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String namefile =request.getParameter("textareaCSV");
 		
-		iDatenzugriff csv = new DatenzugriffCSV();
+		iDatenzugriff csv = new DatenzugriffCSV(new SpielBean());
 		
 		if(Index.getGame()!=null){
 			
-			csv.speichern("/Users/sevenvista/Desktop/"+ namefile, Index.getGame());
+			try {
+				csv.speichern( Index.getGame(),"/Users/sevenvista/Desktop/"+ namefile);
+			} catch (JAXBException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			response.setContentType("text/html");
 			PrintWriter out = response.getWriter();
@@ -60,17 +67,22 @@ public class SpeichernCSV extends HttpServlet {
 			}
 			
 		}else if(SpielerLadenWeb.getGameLaden()!=null){
-			csv.speichern("/Users/sevenvista/Desktop/"+ namefile, SpielerLadenWeb.getGameLaden());
+			try {
+				csv.speichern(SpielerLadenWeb.getGameLaden(),"/Users/sevenvista/Desktop/"+ namefile);
+			} catch (JAXBException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			response.setContentType("text/html");
 			PrintWriter out = response.getWriter();
 			try{
-				out.println(BrettLaden.getHeader());
-				out.println(BrettLaden.getMenu());
-				out.println(BrettLaden.getTable());
-				out.println(BrettLaden.getMenuEnd());
+				out.println(Brett.getHeader());
+				out.println(Brett.getMenu());
+				out.println(Brett.getTable());
+				out.println(Brett.getMenuEnd());
 			}finally{
-				out.println(BrettLaden.getFooter());
+				out.println(Brett.getFooter());
 				out.close();
 			}
 		}

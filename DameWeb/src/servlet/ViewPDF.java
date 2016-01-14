@@ -43,7 +43,7 @@ public class ViewPDF extends HttpServlet {
 		
 		response.setContentType( "application/pdf" );
 		String file=(String)request.getSession().getAttribute("filePDF");
-		String fileURL = "/Users/sevenvista/Desktop/"+file+".pdf";	
+		String fileURL = "C:/Users/Katherina/Desktop"+file+".pdf";	
 		
 		if(file==null){
 			response.sendRedirect("/DameLokalWeb/Error.jsp");

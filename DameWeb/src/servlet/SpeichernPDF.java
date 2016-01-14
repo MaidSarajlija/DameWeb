@@ -46,7 +46,7 @@ public class SpeichernPDF extends HttpServlet {
 		if(Index.getGame()!=null){
 			
 			try {
-				pdf.speichern(Index.getGame(),"/Users/sevenvista/Desktop/"+ namefile);
+				pdf.speichern(Index.getGame(),"C:/Users/Katherina/Desktop"+ namefile);
 			} catch (JAXBException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -66,7 +66,7 @@ public class SpeichernPDF extends HttpServlet {
 			
 		}else if(SpielerLadenWeb.getGameLaden()!=null){
 			try {
-				pdf.speichern(SpielerLadenWeb.getGameLaden(),"/Users/sevenvista/Desktop/"+ namefile);
+				pdf.speichern(SpielerLadenWeb.getGameLaden(),"C:/Users/Katherina/Desktop"+ namefile);
 			} catch (JAXBException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
