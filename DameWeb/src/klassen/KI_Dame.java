@@ -1,8 +1,12 @@
 package klassen;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import javax.xml.bind.annotation.*;
 
-public class KI_Dame extends KI {
+
+@XmlType
+public class KI_Dame extends KI implements Serializable{
 
 	/**
 	 * 
@@ -11,9 +15,14 @@ public class KI_Dame extends KI {
 	
 
 
+	public KI_Dame() {
+	}
+	
 	public KI_Dame(SpielBean spiel) {
 		super(spiel);
 	}
+	
+	
 	
 	
 	@Override

@@ -19,7 +19,6 @@ public class Wait extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private static final String Wait = "/Wait.jsp";
-//	ArrayList<String> list = new ArrayList<String>();
 	private static final String brett = "/Brett.jsp";
 	public String[]x;
 	
@@ -49,25 +48,46 @@ public class Wait extends HttpServlet {
 		RequestDispatcher rd = sc.getRequestDispatcher(Wait);
 		RequestDispatcher rd1 = sc.getRequestDispatcher(brett);
 		
-
 		
-		if(Index.getGame().getNameWeb()!=null){
-			
-			this.brettRufen(request, response);
-			rd1.forward(request, response);
-		}else{
+
+		if(SpielerLadenWeb.getGameLaden()!=null){
+			if(SpielerLadenWeb.getGameLaden().getSessionId()!=null){
+				this.brettRufen(request, response);
+				rd1.forward(request, response);
+			}else{
+				rd.forward(request, response);
+			}
+		}else if(Index.getGame()!=null){
+			if(Index.getGame().getNameWeb()!=null){
+				this.brettRufen(request, response);
+				rd1.forward(request, response);
+			}else{
 			rd.forward(request, response);
-		}
+			}
+		}	
 	}
 	
 	public void brettRufen(HttpServletRequest request, HttpServletResponse response){
+		ServletContext sc = this.getServletContext();
+		String ab=sc.getRealPath("/");
 		String s="";
-		if(Index.getGame().hatGewonnen()==true){
-			s+="<input disabled id='refresh' type = 'submit' value = 'Lauf Ki' name='laufKi'>";
+		if(SpielerLadenWeb.getGameLaden()!=null){
+			SpielerLadenWeb.getGameLaden().setRealPath(ab);
+			if(SpielerLadenWeb.getGameLaden().hatGewonnen()==true){
+				s+="<input disabled id='refresh' type = 'submit' value = 'Lauf Ki' name='laufKi'>";
+			}else{
+				s+="<input id='refresh' type = 'submit' value = 'Lauf Ki' name='laufKi'>";
+			}
+			request.getSession().setAttribute("laufKI", s);
 		}else{
-			s+="<input id='refresh' type = 'submit' value = 'Lauf Ki' name='laufKi'>";
+			Index.getGame().setRealPath(ab);
+			if(Index.getGame().hatGewonnen()==true){
+				s+="<input disabled id='refresh' type = 'submit' value = 'Lauf Ki' name='laufKi'>";
+			}else{
+				s+="<input id='refresh' type = 'submit' value = 'Lauf Ki' name='laufKi'>";
+			}
+			request.getSession().setAttribute("laufKI", s);
 		}
-		request.getSession().setAttribute("laufKI", s);
 		
 		
 		ArrayList<String> ausgabe=this.ausgabe();
@@ -78,11 +98,19 @@ public class Wait extends HttpServlet {
 			for(int k=0;k<12;k++){
 				b++;
 				String fig="";
-				if(Index.getGame().hatGewonnen()==true){
-					fig="<a onclick='myFunction("+b+")' href='javascript:;' class='active' >";
+				if(SpielerLadenWeb.getGameLaden()!=null){
+					if(SpielerLadenWeb.getGameLaden().hatGewonnen()==true){
+						fig="<a onclick='myFunction("+b+")' href='javascript:;' class='active' >";
+						request.getSession().setAttribute("link", fig);
+						break;
+					}
+				}else{
+					if(Index.getGame().hatGewonnen()==true){
+						fig="<a onclick='myFunction("+b+")' href='javascript:;' class='active' >";
+						request.getSession().setAttribute("link", fig);
+						break;
+					}
 				}
-				request.getSession().setAttribute("link", fig);
-				
 				if(b==2){
 					String update=this.updateFigur(b);
 					request.getSession().setAttribute("fig1", update);
@@ -379,20 +407,35 @@ public class Wait extends HttpServlet {
 		String o="";
 		
 		//----Schwarz------
-		if(Index.getGame().gibFigurWebId()[i]!=null&&Index.getGame().gibFigurWebId()[i]=="schwarz"){
-			o="<img src='Bilder/schwarzerStein.png'>";
-		}
-		else{
-			//----leere Figur---
-			o="<img src='Bilder/leererStein.png'>";
-		}
-		
-		//-----Weiss-----
-		if(Index.getGame().gibFigurWebId()[i]!=null&&Index.getGame().gibFigurWebId()[i]=="weiss"){
-			o="<img src='Bilder/weissStein.png'>";
+		if(SpielerLadenWeb.getGameLaden()!=null){
+			if(SpielerLadenWeb.getGameLaden().gibFigurWebId()[i]!=null&&SpielerLadenWeb.getGameLaden().gibFigurWebId()[i]=="schwarz"){
+				o="<img src='Bilder/schwarzerStein.png'>";
+			}
+			else{
+				//----leere Figur---
+				o="<img src='Bilder/leererStein.png'>";
+			}
+			
+			//-----Weiss-----
+			if(SpielerLadenWeb.getGameLaden().gibFigurWebId()[i]!=null&&SpielerLadenWeb.getGameLaden().gibFigurWebId()[i]=="weiss"){
+				o="<img src='Bilder/weissStein.png'>";
+			}
+			
+		}else{
+			if(Index.getGame().gibFigurWebId()[i]!=null&&Index.getGame().gibFigurWebId()[i]=="schwarz"){
+				o="<img src='Bilder/schwarzerStein.png'>";
+			}
+			else{
+				//----leere Figur---
+				o="<img src='Bilder/leererStein.png'>";
+			}
+			
+			//-----Weiss-----
+			if(Index.getGame().gibFigurWebId()[i]!=null&&Index.getGame().gibFigurWebId()[i]=="weiss"){
+				o="<img src='Bilder/weissStein.png'>";
+			}
 		}
 		return o;
-		
 	}
 	
 	public ArrayList<String> ausgabe(){

@@ -2,6 +2,8 @@ package klassen;
 
 import java.util.Random;
 
+import daten.DatenzugriffXML;
+import daten.iDatenzugriff;
 import klassen.FarbEnum;
 import klassen.SpielBean;
 import klassen.iBediener;
@@ -10,13 +12,21 @@ public class TestSpiel {
 
 	public static void main(String[] args) {
 
-		SpielBean i= new SpielBean();
+//		SpielBean i= new SpielBean();
+//		System.out.println("hi");
 		
-		
-		i.addSpieler("Weiss", FarbEnum.WEISS,new KI_Dame(i));
-		i.addSpieler("Schwarz", FarbEnum.SCHWARZ,new KI_Dame(i));
-		
-		i.starteSpiel();
+//		i.addSpieler("Weiss", FarbEnum.WEISS, null);
+//		i.addSpieler("Schwarz", FarbEnum.SCHWARZ,new KI_Dame(i));
+//		
+//		i.starteSpiel();
+//		System.out.println(i.getSpieler1().getFigurArray()[1]);
+//		i.figurSetzen();
+//		System.out.println("hi");
+//		i.laufen("H2","G1");
+//		iDatenzugriff x=new DatenzugriffXML();
+//		x.speichern("C:/Users/mait/Desktop/hi", i);
+//		
+//		x.laden("C:/Users/mait/Desktop/hi.xml");
 		
 
 		

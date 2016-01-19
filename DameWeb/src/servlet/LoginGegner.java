@@ -69,6 +69,9 @@ public class LoginGegner extends HttpServlet {
 	}
 	
 	public void brettRufen(HttpServletRequest request, HttpServletResponse response){
+		ServletContext sc = this.getServletContext();
+		String ab=sc.getRealPath("/");
+		Index.getGame().setRealPath(ab);
 		String s="";
 		if(Index.getGame().hatGewonnen()==true){
 			s+="<input disabled id='refresh' type = 'submit' value = 'Lauf Ki' name='laufKi'>";

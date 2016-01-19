@@ -1,12 +1,24 @@
 package klassen;
+
+import java.beans.Transient;
+import java.io.Serializable;
+
+import javax.servlet.annotation.MultipartConfig;
+import javax.xml.bind.annotation.*;
+
 /**
  * Klasse Spielfigur
  * @author B2
  *
  */
-public class Spielfigur {
+@XmlType(propOrder={"farbe","id","istDame"})
+public class Spielfigur implements Serializable{
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private FarbEnum farbe;
 	private String id;
 	private String position;
@@ -15,6 +27,9 @@ public class Spielfigur {
 	private boolean istDame=false;
 	
 	
+	
+	public Spielfigur(){
+	}
 	
 	/**
 	 * Konstruktor
@@ -29,28 +44,18 @@ public class Spielfigur {
 		}
 		this.setFarbe(farbe);
 		this.setSpielfeld(feld);
-	
-		
 	}
 	
-	public void setDame(boolean istDame) {
+	
+	@XmlElement(name="istDame")
+	public void setIstDame(boolean istDame) {
 		this.istDame = istDame;
-
 	}
-
-	public boolean getDame() {
+	public boolean isIstDame() {
 		return istDame;
 	}
 	
-	public boolean istDame(Spielfigur figur){
-		if(figur.getDame()==true){
-		return true;
-		}
-		return false;	
-		
-	
-	}
-	
+//	@XmlTransient
 	public String getId(){
 		return id;
 	}
@@ -63,22 +68,12 @@ public class Spielfigur {
 	 * setzt die ID
 	 */
 	
-	
-	public void setId(int count){
-		
-		switch (this.farbe) {
-		case SCHWARZ:
-			id ="black "+count;
-			break;
-		case WEISS:
-			id ="white "+count;
-			break;
-		}
-		
+	@XmlElement(name="Id")
+	public void setId(String id){
+		this.id=id;
 	}
-
+	@XmlTransient
 	public void setSpielfeld(Spielfeld spielfeld){
-		
 		if (spielfeld==null){
 			throw new RuntimeException(" Falsche Eingabe");
 		}
@@ -87,7 +82,7 @@ public class Spielfigur {
 			
 		}
 	}
-	
+//	@XmlElement(name="farbe")
 	public FarbEnum getFarbe(){
 		return farbe;
 		
@@ -98,69 +93,22 @@ public class Spielfigur {
 	 * eine Fehlermeldung ausgeschmissen
 	 * @param farbe setzt die Farbe der SPielfigur, zur Auswahl stehen schwarz und weiss
 	 */
+	@XmlElement(name="farbe")
 	public void setFarbe(FarbEnum farbe){
 		if(farbe==null){
 			throw new RuntimeException("Fehler setter figur - keine gueltige Farbe");
 		}
-		
-		
 		this.farbe=farbe;
 	}
 	
+	
+	@XmlTransient
 	public String getPosition(){
 		 position=this.spielfeld.getId();
 		 return position;
 	}
 	
-	public void setzeFigur(Spielfeld feld){
-		if(feld!=null){
-			if(feld.getFigur()==null){
-				this.spielfeld=feld;
-				this.spielfeld.setFigur(this);
-			}
-		}
-	}
-	
-	
-
-	
-	/**
-	 * Setter mit Ueberpfuefung pb die Position der Spielfigur
-	 * größer 0 ist
-	 * @param position setzt die position der spielfigur
-	 */
-//	public void setPosition(String position) {	
-//		if(spielfeld.istFeldBelegt()==true){
-//			System.out.println("Es befindet sich eine Figur auf diesem Spielfeld. Schlagen?");
-//		}else{
-//			this.position= position;
-//			this.setSpielfeld(spielfeld);
-//			spielfeld.setFigur(this);
-//			System.out.println(""+this +" wurde auf Position: " + position + " gelegt.");
-//			}
-//	}
-	
-//	public void istDame(boolean istDame){
-//		if(this.getFarbe().equals(FarbEnum.WEISS)){
-//			if(this.position.contains("12")){
-//				this.istDame=true;
-//			}
-//			else{
-//				this.istDame=false;
-//			}
-//		}
-//		if(this.getFarbe().equals(FarbEnum.SCHWARZ)){
-//			if(this.position.contains("1")){
-//				this.istDame=true;
-//			}
-//			else{
-//				this.istDame=false;
-//			}
-//		}
-//		
-//	}
-	
-	public Spielfeld getFeld(){
+	public Spielfeld getSpielfeld(){
 		return spielfeld;
 	}
 	
@@ -169,7 +117,7 @@ public class Spielfigur {
 	@Override
 	public String toString() {
 
-		return  this.getId()+ " ---> " + this.getPosition() +  " ist Dame " + getDame();
+		return this.getId()+ " ---> " + this.getPosition() +  " ist Dame " + isIstDame();
 
 	}
 

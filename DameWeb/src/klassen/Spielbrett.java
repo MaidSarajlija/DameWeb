@@ -1,9 +1,9 @@
-
-
 package klassen;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import javax.xml.bind.annotation.*;
 
 
 
@@ -13,15 +13,16 @@ import java.util.ArrayList;
  * @author B2
  *
  */
+@XmlType(propOrder={"spielfeld","felder"})
 public class Spielbrett implements Serializable {
 
-	private static final long SerialVersion = 1l;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Spielfeld spielfeld;
-	private Spielbrett sb;
-	private Spielfeld[][] felder ;
+	private Spielfeld[][] felder;
 	private boolean schwarz = true;
-	private SpielBean spiel;
-	private Spieler spieler;
 	private String str = null;
 	private int x;
 	private int y;
@@ -37,16 +38,9 @@ public class Spielbrett implements Serializable {
 
 	public Spielbrett() {
 		felder= new Spielfeld[12][12];
-//		for(int i=0;i<12;i++){
-//			for(int j=0;j<12;j++){
-//			felder[i][j]=new Spielfeld(this, str, schwarz);
-//			}
-//		}
 		feldBelegen();
 	}
 	
-
-
 	/**
 	 * Methode getSpielbrett 
 	 * Felder werden erstellt mit jeweiliger Beschriftung und 
@@ -72,7 +66,7 @@ public class Spielbrett implements Serializable {
 				felder[i][j].setX(j);
 				felder[i][j].setY(i);
 				
-			System.out.println(felder[i][j].toString());
+//			System.out.println(felder[i][j].toString());
 				schwarz = !schwarz;
 
 				if (x > 12) {
@@ -93,13 +87,6 @@ public class Spielbrett implements Serializable {
 			
 		}
 		
-	}
-	
-	public int getX(){
-		return this.x;
-	}
-	public int getKY(){
-		return this.y;
 	}
 
 	public String Umwandler(String s){
@@ -136,105 +123,45 @@ public class Spielbrett implements Serializable {
 		return s;
 		}
 
-	
-
+	@XmlElement(name="spielfeld")
 	public Spielfeld getSpielfeld() {
 		return spielfeld;
 	}
-
-
-
-
-
-
 	public void setSpielfeld(Spielfeld spielfeld) {
 		this.spielfeld = spielfeld;
 	}
 
-
-
-
-
-
-	public Spielbrett getSb() {
-		return sb;
-	}
-
-
-
-
-
-
-	public void setSb(Spielbrett sb) {
-		this.sb = sb;
-	}
-
-
-
-
-
-
+	@XmlElement(name="spielfelder")
 	public Spielfeld[][] getFelder() {
 		return felder;
 	}
-
-
-
-
-
-
 	public void setFelder(Spielfeld[][] felder) {
 		this.felder = felder;
 	}
-
-
-
-
-
-
+	@XmlTransient
 	public boolean isSchwarz() {
 		return schwarz;
 	}
 
-
-
-
-
-
 	public void setSchwarz(boolean schwarz) {
 		this.schwarz = schwarz;
 	}
-	
+	@XmlTransient
 	public ArrayList<Integer> getPositionen() {
 		return positionen;
 	}
-
-
 
 	public void setPositionen(ArrayList<Integer> positionen) {
 		this.positionen = positionen;
 	}
 
-
-
-
-
-
 	/**
 	 * Getter fuer die Farbe
 	 * @return schwarz
 	 */
-	public boolean getFarbe() {
-		return schwarz;
-
-	}
-	
-	public Spielbrett getSB(){
-		return this;
-	}
-	
-	
-	
+//	public boolean getFarbe() {
+//		return schwarz;
+//	}
 	public Spielfeld getFeld(String id){
 		int [] in = stringId(id);
 		if(in[0]>64&&in[0]<77){
@@ -264,35 +191,6 @@ public class Spielbrett implements Serializable {
 		return in;
 	}
 	
-
-//public static void main(String[] args) {
-//	
-//	
-//	Spielbrett s = new Spielbrett();
-//	s.Umwandler("B2");
-//	s.getUmwandler(66,2);
-//	System.out.println(s);
-//}
-
-	
-///**
-// * toString Methode der Klasse Spielbrett
-// */
-//	@Override
-//	public String toString() {
-//		String s = "";
-//		for(int i=0;i<felder.length;i++){
-//			for(int j=0;j<felder[i].length;j++){
-//				
-//				s = ""+ felder[i][j];
-//			}
-//			
-//		}
-//		return s;
-//	
-//
-//				
-//	}
 @Override 
 public String toString(){
 	return "" + getUmwandler(this.x, this.y);

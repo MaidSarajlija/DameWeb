@@ -619,7 +619,7 @@ public class GuiSpielbrett extends JOptionPane {
 						parts=null;
 						
 					//wenn die Figur eine Dame ist
-					}else if(f.getDame()){
+					}else if(f.isIstDame()){
 							this.getFelder().get(this.feld(pos)).setIcon(null);
 							this.getFelder().get(this.feld(ziel)).setIcon(null);
 							this.getFelder().get(this.feld(spiel.gibFeld(fig.getId()).getId())).setIcon(figur);
@@ -660,7 +660,7 @@ public class GuiSpielbrett extends JOptionPane {
 						parts=null;
 						
 						//wenn die Figur eine Dame ist
-						}else if(f.getDame()){
+						}else if(f.isIstDame()){
 							this.getFelder().get(this.feld(pos)).setIcon(null);
 							this.getFelder().get(this.feld(ziel)).setIcon(null);
 							this.getFelder().get(this.feld(spiel.gibFeld(fig.getId()).getId())).setIcon(figur);
@@ -697,7 +697,7 @@ public class GuiSpielbrett extends JOptionPane {
 			 
 			 figur=(ImageIcon)this.farbeIcon(spiel.farbePlayer()).get(this.figurStringWeiss(fig.getId()));
 			 spiel.laufen(pos,ziel);
-			 if(fig.getDame()==true){
+			 if(fig.isIstDame()==true){
 				 
 				 String neuePos=spiel.gibFeld(fig.getId()).getId();
 				 
@@ -725,7 +725,7 @@ public class GuiSpielbrett extends JOptionPane {
 		 else if(spiel.farbePlayer().startsWith("S")){
 			 figur=(ImageIcon)this.farbeIcon(spiel.farbePlayer()).get(this.figurStringSchwarz(fig.getId()));
 			 spiel.laufen(pos,ziel);
-			 if(fig.getDame()==true){
+			 if(fig.isIstDame()==true){
 				
 				 String neuePos=spiel.gibFeld(fig.getId()).getId();
 				 

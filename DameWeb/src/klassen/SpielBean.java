@@ -1,24 +1,22 @@
 package klassen;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
-import java.util.Scanner;
 
-import daten.DatenzugriffCSV;
-import daten.DatenzugriffSerialisiert;
-import daten.iDatenzugriff;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
 
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlRootElement(namespace="https://www.youtube.com/?hl=de&gl=DE")
+@XmlType(propOrder={"spieler1","spieler2","spielerAmZug","spielbrett","figurWeiss2","figurSchwarz2","figurWeiss","figurSchwarz"})
 public class SpielBean implements iBediener, Serializable {
 
 	/**
@@ -43,7 +41,6 @@ public class SpielBean implements iBediener, Serializable {
 	private boolean rechts = false;
 	private ArrayList<String> datenSchlagen = new ArrayList<String>();
 	private boolean zugOk = false;
-	private static iDatenzugriff daten;
 	private PrintWriter pw;
 	private String[] gepusteteFigur = new String[1];
 	private boolean kannLaufen = false;
@@ -55,21 +52,59 @@ public class SpielBean implements iBediener, Serializable {
 	private String gegner=null;
 	private String farbeWeb=null;
 	private String nameWeb=null;
+	private String sessionId=null;
+	private String realPath=null;
 	
-	public SpielBean() {
+	
+	
 
+
+	public SpielBean() {
+		spielbrett = new Spielbrett();
 	}
 	
+	
+	@Override
+	public String getRealPath() {
+		return realPath;
+	}
+
+
+	@Override
+	public void setRealPath(String realPath) {
+		this.realPath = realPath;
+	}
+
+
+
+	@Override
+	public String getSessionId() {
+		return sessionId;
+	}
+
+
+	@Override
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
+	}
+
+
+
+	@XmlTransient
 	@Override
 	public String getNameWeb() {
 		return nameWeb;
+	}
+	@XmlElement(name="spielbrett")
+	public void setSpielbrett(Spielbrett spielbrett) {
+		this.spielbrett = spielbrett;
 	}
 
 	@Override
 	public void setNameWeb(String nameWeb) {
 		this.nameWeb = nameWeb;
 	}
-	
+	@XmlTransient
 	@Override
 	public String getFarbeWeb() {
 		return farbeWeb;
@@ -81,7 +116,7 @@ public class SpielBean implements iBediener, Serializable {
 		this.farbeWeb = farbeWeb;
 	}
 	
-	
+	@XmlTransient
 	@Override
 	public String getGegner() {
 		return gegner;
@@ -94,45 +129,46 @@ public class SpielBean implements iBediener, Serializable {
 	}
 
 
-
+	@XmlTransient
 	@Override
 	public ArrayList<Integer> getZelle() {
 		return zelle;
 	}
-
+	@XmlTransient
 	public ArrayList<Spielfeld> getGegnerDame() {
 		return gegnerDame;
 	}
-
+	@XmlTransient
 	public Spielfigur getFigur() {
 		return figur;
 	}
 
+//	@XmlElement(name="Spielbrett")
 	@Override
 	public Spielbrett getSpielbrett() {
 		return spielbrett;
 	}
-
+	@XmlElement
 	public ArrayList<Spielfigur> getFigurWeiss2() {
 		return figurWeiss2;
 	}
-
+	@XmlElement
 	public ArrayList<Spielfigur> getFigurSchwarz2() {
 		return figurSchwarz2;
 	}
-
+	@XmlElement
 	public Spielfigur[] getFigurWeiss() {
 		return figurWeiss;
 	}
-
+	@XmlElement
 	public Spielfigur[] getFigurSchwarz() {
 		return figurSchwarz;
 	}
-
+	@XmlTransient
 	public boolean getKannLaufen() {
 		return kannLaufen;
 	}
-
+	@XmlTransient
 	public String[] getGepusteteFigur() {
 		return gepusteteFigur;
 	}
@@ -140,11 +176,12 @@ public class SpielBean implements iBediener, Serializable {
 	public void setGepusteteFigur() {
 		this.gepusteteFigur[0] = null;
 	}
-
+	@XmlTransient
 	public ArrayList<String> getDatenSchlagen() {
 		return datenSchlagen;
 	}
 
+//	@XmlElement(name="spielerAmZug")
 	@Override
 	public Spieler getSpielerAmZug() {
 		return spielerAmZug;
@@ -178,22 +215,6 @@ public class SpielBean implements iBediener, Serializable {
 		}
 		return getFarbe;
 	}
-
-//	@Override
-//	public void newSpieler(String name,String Farbe,String KI){
-//		
-//		PrintStream ps = new PrintStream(baos);
-//		PrintStream old = System.out;
-//		System.setOut(ps);	
-//		
-//		Spieler x =new Spieler(name,this.bestimmeFarbe(Farbe),this.bestimmeKI(KI)) ;
-//		SpielerAmZug(x);
-//		spielerAnz++;
-//		System.out.println("Teilnehmer: --> "+x.getName());
-//		
-//		System.out.flush();
-//		System.setOut(old);
-//	}
 	
 	/**
 	 * 
@@ -231,10 +252,12 @@ public class SpielBean implements iBediener, Serializable {
 			Spieler sp = new Spieler(name, farbe, ki);
 
 			if (farbe.equals(FarbEnum.SCHWARZ)) {
-				this.spieler2 = sp;
+				spieler2 = sp;
+//				this.getSpielerlist().add(spieler2);
 				spielerAnz++;
 			} else if (farbe.equals(FarbEnum.WEISS)) {
-				this.spieler1 = sp;
+				spieler1 = sp;
+//				this.getSpielerlist().add(spieler1);
 				spielerAnz++;
 			}
 
@@ -245,10 +268,12 @@ public class SpielBean implements iBediener, Serializable {
 		if (spielerAnz == 0) {
 			Spieler sp = new Spieler(name, farbe, ki);
 			if (farbe.equals(FarbEnum.WEISS)) {
-				this.spieler1 = sp;
+				spieler1 = sp;
+//				this.getSpielerlist().add(spieler1);
 				spielerAnz++;
 			} else if (farbe.equals(FarbEnum.SCHWARZ)) {
-				this.spieler2 = sp;
+				spieler2 = sp;
+//				this.getSpielerlist().add(spieler2);
 				spielerAnz++;
 			}
 
@@ -259,15 +284,29 @@ public class SpielBean implements iBediener, Serializable {
 		System.out.flush();
 		System.setOut(old);
 	}
-
+	@XmlTransient
+	@Override
 	public int getSpielerAnz() {
-		return spielerAnz;
+		int i=0;
+		if(spieler1!=null && spieler2!=null){
+			i=2;
+		}
+		if(spieler1!=null && spieler2==null){
+			i=1;
+		}
+		if(spieler1==null && spieler2!=null){
+			i=1;
+		}
+		if(spieler1==null && spieler2==null){
+			i=0;
+		}
+		return i;
 	}
 
 	@Override
 	public void figurSetzen() {
 
-		SpielerAmZug(spieler1);
+		setSpielerAmZug(spieler1);
 
 		char ch = 'L';
 		char ch1 = 'A';
@@ -294,7 +333,6 @@ public class SpielBean implements iBediener, Serializable {
 
 					}
 					schwarz = !schwarz;
-
 				}
 
 				if (this.spielbrett.getFelder()[i][j].getId().startsWith("A")
@@ -313,11 +351,11 @@ public class SpielBean implements iBediener, Serializable {
 
 						if (count == 30) {
 							figurSchwarz[count] = figur;
-							figur.setId(count);
+							figur.setId("black "+count);
 							count = 0;
 						} else {
 							figurSchwarz[count] = figur;
-							figur.setId(count);
+							figur.setId("black "+count);
 						}
 						count++;
 
@@ -350,14 +388,14 @@ public class SpielBean implements iBediener, Serializable {
 							if (count == 1 && str.equals("L12")) {
 								count = 1;
 								figurWeiss[count] = figur;
-								figur.setId(count);
+								figur.setId("white "+count);
 							} else if (count == 1) {
 								count = 30;
 								figurWeiss[count] = figur;
-								figur.setId(count);
+								figur.setId("white "+count);
 							} else {
 								figurWeiss[count] = figur;
-								figur.setId(count);
+								figur.setId("white "+count);
 							}
 							count--;
 							figur.setSpielfeld(spielbrett.getFeld(str));
@@ -387,8 +425,8 @@ public class SpielBean implements iBediener, Serializable {
 		}
 		return feld;
 	}
-
-	public void SpielerAmZug(Spieler spieler) {
+	@XmlElement(name="spielerAmZug")
+	public void setSpielerAmZug(Spieler spieler) {
 		if (spieler != null) {
 			this.spielerAmZug = spieler;
 		}
@@ -430,23 +468,23 @@ public class SpielBean implements iBediener, Serializable {
 		System.out.println("---Das Spielbrett wird erstellt---");
 		System.out.println("");
 
-		if (spielerAnz < 3 && spielerAnz >= 1) {
+//		if (spielerAnz < 3 && spielerAnz >= 1) {
 
-			spielbrett = new Spielbrett();
-			this.setSpielerAnz(spielerAnz);
+//			spielbrett = new Spielbrett();
+//			this.setSpielerAnz(spielerAnz);
 			this.figurSetzen();
 			this.putArray();
 			System.out.println(spieler1.getName() + " du musst anfangen :-)");
-		}
+//		}
 		
 		System.out.flush();
 		System.setOut(old);
 	}
 
-	private void setSpielerAnz(int spielerAnz) {
-		this.spielerAnz = spielerAnz;
-
-	}
+//	private void setSpielerAnz(int spielerAnz) {
+//		this.spielerAnz = spielerAnz;
+//
+//	}
 
 	@Override
 	public String toString() {
@@ -560,7 +598,7 @@ public class SpielBean implements iBediener, Serializable {
 					figur.setSpielfeld(spielbrett.getFeld(zielFeld.getId()));
 
 					zielFeld.setFigur(figur);
-					System.out.println(figur.getFeld().getId());
+					System.out.println(figur.getSpielfeld().getId());
 
 				}
 
@@ -627,19 +665,18 @@ public class SpielBean implements iBediener, Serializable {
 
 		Spielfeld aktFeld = this.gebeFeld(aktPos);
 		Spielfeld zielFeld = this.gebeFeld(zielPos);
-		Spielfigur figur = this.gebeFigur(aktFeld.getFigur().getId());
+		String id = aktFeld.getFigur().getId();
+		Spielfigur figur = this.gebeFigur(id);
 
 		if (figur == null) {
 			System.out.println("Du bist nicht dran !");
 		} else if (aktFeld.getFigur() == null && zielFeld.getFigur() == null) {
 			System.out.println("Das Feld ist leer !");
 		} else {
-			if ((figur.getFarbe().equals(FarbEnum.SCHWARZ) && this.figur
-					.istDame(figur))) {
+			if ((figur.getFarbe().equals(FarbEnum.SCHWARZ) && this.istEsDame(figur))) {
 				laufeDameSchwarz(aktPos, zielPos);
 				return;
-			} else if ((figur.getFarbe().equals(FarbEnum.WEISS) && this.figur
-					.istDame(figur))) {
+			} else if ((figur.getFarbe().equals(FarbEnum.WEISS) && this.istEsDame(figur))) {
 				laufeDameWeiss(aktPos, zielPos);
 				return;
 			}
@@ -828,17 +865,17 @@ public class SpielBean implements iBediener, Serializable {
 	public void werdeDame(Spielfigur figur) {
 		if (figur.getId().startsWith("w")) {
 			if (figur.getPosition().contains("A")) {
-				figur.setDame(true);
+				figur.setIstDame(true);
 
 			}
 		}
 		if (figur.getId().startsWith("b")) {
 			if (figur.getPosition().contains("L")) {
-				figur.setDame(true);
+				figur.setIstDame(true);
 			}
 		}
 	}
-
+	@XmlTransient
 	@Override
 	public boolean getZugOk() {
 		return zugOk;
@@ -850,12 +887,12 @@ public class SpielBean implements iBediener, Serializable {
 		PrintStream old = System.out;
 		System.setOut(ps);	
 		
-		if (this.spielerAmZug.equals(spieler1)) {
-			SpielerAmZug(spieler2);
+		if (this.spielerAmZug.getName().equals(spieler1.getName())) {
+			setSpielerAmZug(spieler2);
 			System.out
 					.println("Spieler " + spielerAmZug + " ist an der Reihe!");
 		} else {
-			SpielerAmZug(spieler1);
+			setSpielerAmZug(spieler1);
 			System.out
 					.println("Spieler " + spielerAmZug + " ist an der Reihe!");
 		}
@@ -1342,13 +1379,6 @@ public class SpielBean implements iBediener, Serializable {
 
 	public Spielfeld getNachbarDame(String feld, boolean rechts, boolean oben) {
 		Spielfeld fe = null;
-		Spielfeld field=this.gebeFeld(feld);
-		// Spielfeld spielfeld = this.gebeFeld(feld);
-		
-//		wenn das feld am rand ist soll kein nachbar gegettet werden
-//		if(pruefeID1(field)||pruefeID2(field)||pruefeOben(field)||pruefeUnten(field)){
-//			return fe;
-//		}
 
 		// rechtsOben
 		if ((rechts) && (oben)) {
@@ -1759,28 +1789,26 @@ public class SpielBean implements iBediener, Serializable {
 		System.setOut(old);
 		return false;
 	}
-
-	public boolean getZugBeginn() {
-		return istZugbeginn;
-	}
-
-	public void merkeBeginn() {
-		istZugbeginn = false;
-	}
-
-
+//	@XmlElement(name="spieler1")
 	public Spieler getSpieler1() {
 		return spieler1;
 	}
+	@XmlElement(name="spieler1")
+	public void setSpieler1(Spieler spieler1) {
+		this.spieler1 = spieler1;
+	}
+	@XmlElement(name="spieler2")
+	public void setSpieler2(Spieler spieler2) {
+		this.spieler2 = spieler2;
+	}
 
+//	@XmlElement(name="spieler2")
 	public Spieler getSpieler2() {
 		return spieler2;
 	}
 
 	@Override
 	public String farbePlayer() {
-		// System.out.println("spieler: "+spielerAmZug);
-		// System.out.println("farbe: "+spielerAmZug.getFarbe());
 		FarbEnum player = spielerAmZug.getFarbe();
 
 		String pl = null;
@@ -1796,64 +1824,6 @@ public class SpielBean implements iBediener, Serializable {
 		return pl;
 
 	}
-
-	/**
-	 * Speichert die aktuelle Belegung des Spielbretts in CSV-Notation.
-	 */
-	@Override
-	public void belegungCSV() {
-
-		try {
-			pw = new PrintWriter(new FileWriter("speichern/belegung.csv"));
-		} catch (FileNotFoundException e) {
-			System.err.println("DATEI ZUM SPEICHERN NICHT GEFUNDEN!");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		Spielfeld[][] belegung = spielbrett.getFelder();
-		char ch = 'L';
-		char ch1 = 'A';
-		int x = 1;
-		String str = null;
-		boolean schwarz = true;
-
-		for (int i = 0; i < spielbrett.getFelder().length; i++) {
-
-			for (int j = 0; j < belegung[i].length; j++) {
-				str = "" + ch1 + x;
-				x++;
-
-				pw.print(belegung[i][j] = new Spielfeld(spielbrett, str,
-						schwarz));
-
-				schwarz = !schwarz;
-
-				if (x > 12) {
-					x = 1;
-					ch1++;
-					if (ch1 == ch) {
-						str = "" + ch + x;
-						schwarz = !schwarz;
-
-						break;
-
-					}
-					schwarz = !schwarz;
-
-				}
-
-			}
-			pw.println();
-		}
-
-		pw.close();
-	}
-
-	
-
-	
-
 	@Override
 	public Spielfeld gibFeld(String figur) {
 		Spielfeld feld = null;
@@ -2462,33 +2432,23 @@ public class SpielBean implements iBediener, Serializable {
 		return i;
 	}
 	
-	@Override	
-	public int bestandSpielerlist(){
-		
-		int i=0;
-		if(spieler1!=null && spieler2!=null){
-			i=2;
-			return i;
-		}
-		else if(spieler1!=null || spieler2!=null){
-			i=1;
-			return i;
-		}
-	else{
-		return i;
-	}
-}   
-	
-	
 	@Override
 	public boolean menschDrin(){
-		if(this.bestandSpielerlist()==2){
-			if(spieler1.getKi()!=null){
-				return false;
-			}
+		if(spieler1.getKi()==null && spieler2.getKi()==null){
+			return true;
 		}
-		return true;
+		return false;
+		
 	}
-
+	
+	//methode-----------
+		public boolean istEsDame(Spielfigur figur){
+			if(figur.isIstDame()==true){
+			return true;
+			}
+			return false;	
+			
+		
+		}
 
 }

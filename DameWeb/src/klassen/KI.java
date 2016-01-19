@@ -3,7 +3,10 @@ package klassen;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import javax.xml.bind.annotation.*;
 
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlType
 public abstract class KI implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -29,6 +32,8 @@ public abstract class KI implements Serializable {
 	 */
 	
 
+	public KI() {		
+	}
 
 	public KI(SpielBean spiel) {
 //		if(spieler==null){
@@ -39,6 +44,8 @@ public abstract class KI implements Serializable {
 		this.setKannLaufen(kannLaufen);
 		
 	}
+	
+	
 	
 
 	public ArrayList<String> getZiel() {
@@ -197,9 +204,6 @@ public abstract class KI implements Serializable {
 
 	public Spielfigur randomFigur() {
 		Spielfigur f=null;
-//		if(binDrinKi==false){
-//			putArrayKI();
-//		}
 
 		if(spiel.getSpielerAmZug().getFarbe().equals(FarbEnum.WEISS)){
 				int n=(int)(neuFullWeiss.size() * Math.random()) +1;
@@ -249,12 +253,12 @@ public abstract class KI implements Serializable {
 		//im Falle wenn die figur eine Dame ist
 		startFeldDame.clear();
 		zielFeldDame.clear();
-		startFeldDame.add(figur.getFeld());
-		if(figur.getDame()==true){
+		startFeldDame.add(figur.getSpielfeld());
+		if(figur.isIstDame()==true){
 			
 			while(this.randomSpielfeld().getFarbeFeld().equals(FarbEnum.WEISS)){
 			}
-			while(this.istDiagonal(figur.getFeld(),zielFeldDame.get(0))==false){
+			while(this.istDiagonal(figur.getSpielfeld(),zielFeldDame.get(0))==false){
 				zielFeldDame.clear();
 				while(this.randomSpielfeld().getFarbeFeld().equals(FarbEnum.WEISS)){
 				}
@@ -271,16 +275,16 @@ public abstract class KI implements Serializable {
 		 if(spiel.istFigurDrin(figur.getId())==true){
 			switch (farbe) {
 			case WEISS:
-				if (kannLaufenLinksWeiss(figur.getFeld())
-						|| kannLaufenRechtsWeiss(figur.getFeld())) {
+				if (kannLaufenLinksWeiss(figur.getSpielfeld())
+						|| kannLaufenRechtsWeiss(figur.getSpielfeld())) {
 					kannLaufen=true;
 					return true;
 					}
 				break;
 				
 			case SCHWARZ:
-				if (kannLaufenLinksSchwarz(figur.getFeld())
-						|| kannLaufenRechtsSchwarz(figur.getFeld())) {
+				if (kannLaufenLinksSchwarz(figur.getSpielfeld())
+						|| kannLaufenRechtsSchwarz(figur.getSpielfeld())) {
 //					System.out.println("schwarz "+datenLaufen);
 					kannLaufen=true;
 					return true;
@@ -400,7 +404,7 @@ public abstract class KI implements Serializable {
 			for(int j=0;j<spiel.getSpielbrett().getFelder()[i].length;j++){
 				if(spiel.getSpielbrett().getFelder()[i][j].getFigur()!=null){
 					if(spiel.getSpielbrett().getFelder()[i][j].getFigur().getFarbe().equals(spiel.getSpielerAmZug().getFarbe())){
-						if(spiel.getSpielbrett().getFelder()[i][j].getFigur().getDame()==true){
+						if(spiel.getSpielbrett().getFelder()[i][j].getFigur().isIstDame()==true){
 							alleDamen.add(spiel.getSpielbrett().getFelder()[i][j].getFigur());
 						}
 					}
@@ -421,8 +425,8 @@ public abstract class KI implements Serializable {
 	private boolean kannDameSchlagenOR(Spielfigur f) {
 		spiel.getDatenSchlagen().clear();
 		boolean kannSchlagen=false;
-		String feldId=f.getFeld().getId();
-		Spielfeld aktPos=f.getFeld();
+		String feldId=f.getSpielfeld().getId();
+		Spielfeld aktPos=f.getSpielfeld();
 		Spielfeld nachbar=null;
 		Spielfeld nachbar2=null;
 		
@@ -461,8 +465,8 @@ public abstract class KI implements Serializable {
 	private boolean kannDameSchlagenOL(Spielfigur f) {
 		spiel.getDatenSchlagen().clear();
 		boolean kannSchlagen=false;
-		String feldId=f.getFeld().getId();
-		Spielfeld aktPos=f.getFeld();
+		String feldId=f.getSpielfeld().getId();
+		Spielfeld aktPos=f.getSpielfeld();
 		Spielfeld nachbar=null;
 		Spielfeld nachbar2=null;
 		
@@ -501,8 +505,8 @@ public abstract class KI implements Serializable {
 	private boolean kannDameSchlagenUR(Spielfigur f) {
 		spiel.getDatenSchlagen().clear();
 		boolean kannSchlagen=false;
-		String feldId=f.getFeld().getId();
-		Spielfeld aktPos=f.getFeld();
+		String feldId=f.getSpielfeld().getId();
+		Spielfeld aktPos=f.getSpielfeld();
 		Spielfeld nachbar=null;
 		Spielfeld nachbar2=null;
 		
@@ -541,8 +545,8 @@ public abstract class KI implements Serializable {
 	private boolean kannDameSchlagenUL(Spielfigur f) {
 		spiel.getDatenSchlagen().clear();
 		boolean kannSchlagen=false;
-		String feldId=f.getFeld().getId();
-		Spielfeld aktPos=f.getFeld();
+		String feldId=f.getSpielfeld().getId();
+		Spielfeld aktPos=f.getSpielfeld();
 		Spielfeld nachbar=null;
 		Spielfeld nachbar2=null;
 		
@@ -594,7 +598,7 @@ public abstract class KI implements Serializable {
         	putArrayKISchawrz();
         	return false;
         }
-        
+          
 //      prüfen ob eine Dame schlagen kann
         alleDamen.clear();
         spiel.getGegnerDame().clear();
@@ -630,15 +634,15 @@ public abstract class KI implements Serializable {
           
            switch (farbe) {
            case WEISS:
-           	if (kannSchlagenLinksWeiss(figur.getFeld())
-           			|| kannSchlagenRechtsWeiss(figur.getFeld())){
+           	if (kannSchlagenLinksWeiss(figur.getSpielfeld())
+           			|| kannSchlagenRechtsWeiss(figur.getSpielfeld())){
            		kannSchlagen=true;
            		return true;
            	}
            	break;
            case SCHWARZ:
-           	if (kannSchlagenLinksSchwarz(figur.getFeld())
-           			|| kannSchlagenRechtsSchwarz(figur.getFeld())){
+           	if (kannSchlagenLinksSchwarz(figur.getSpielfeld())
+           			|| kannSchlagenRechtsSchwarz(figur.getSpielfeld())){
            		kannSchlagen=true;
            		return true;
            	}

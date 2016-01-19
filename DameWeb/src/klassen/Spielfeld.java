@@ -2,23 +2,35 @@ package klassen;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * Klasse Spielfeld
  * @author B2
  *
  */
+@XmlType(propOrder={"id","farbeFeld","figur"})
 public class Spielfeld implements Serializable{
 	
-	private static final long SerialVersion = 1l;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String id;
 	private Spielfigur figur;
 	private boolean hatSpielfigur = false;
 	private Spielbrett spielbrett;
 	private FarbEnum farbeFeld;
-	private boolean istSchwarz;
+//	private boolean istSchwarz;
 	private int x; 
 	private int y;
 
+	public Spielfeld() {
+	}
+	
 	/**
 	 * Konstruktor der Klasse Spielfeld
 	 * 
@@ -32,16 +44,14 @@ public class Spielfeld implements Serializable{
 		} else {
 			setFarbeFeld(FarbEnum.WEISS);
 		}
-		this.istSchwarz = schwarz;
+//		this.istSchwarz = schwarz;
 		this.spielbrett = brett;
 	
-		// this.setFigur(figur);
 	}
-
-	// public Spielfeld(Spielbrett spielbrett) {
-	// this.spielbrett=spielbrett;
-	// }
-
+	
+	
+	
+//	@XmlAttribute(name="id")
 	public String getId() {
 		return id;
 	}
@@ -52,12 +62,13 @@ public class Spielfeld implements Serializable{
 	 * @param id
 	 *            setzt die id eines Spielfeldes
 	 */
+	@XmlAttribute(name="id")
 	public void setId(String id) {
 
 		this.id = id;
 	}
 	
-
+//	@XmlElement(name="figur")
 	public Spielfigur getFigur() {
 		return figur;
 	}
@@ -68,23 +79,23 @@ public class Spielfeld implements Serializable{
 	 * 
 	 * @param figur
 	 */
+	@XmlElement(name="figur")
 	public void setFigur(Spielfigur figur) {
-
-			this.figur = figur;
+		this.figur = figur;
 			
 	}
-
+	@XmlElement(name="farbe")
 	public void setFarbeFeld(FarbEnum farbeFeld) {
 		this.farbeFeld = farbeFeld;
 	}
 
+//	@XmlElement(name="farbe")
 	public FarbEnum getFarbeFeld() {
-
-		if (istSchwarz == true) {
-			return FarbEnum.SCHWARZ;
-		}
-
-		return FarbEnum.WEISS;
+//		if (istSchwarz == true) {
+//			return FarbEnum.SCHWARZ;
+//		}
+//		return FarbEnum.WEISS;
+		return farbeFeld;
 	}
 
 	/**
@@ -100,7 +111,7 @@ public class Spielfeld implements Serializable{
 	}
 
 	/**
-	 * Prueft ob Felf belegt ist
+	 * Prueft ob Feld belegt ist
 	 * 
 	 * @return false Gibt false zurueck, wenn Spielfeld nicht belegt ist.
 	 * @return true Gibt true zurueck, wenn auf einem Spielfeld bereits eine
@@ -113,10 +124,11 @@ public class Spielfeld implements Serializable{
 		return false;
 	}
 	
-	
+	@XmlTransient
 	public int getX(){
 		return x;
 	}
+	@XmlTransient
 	public int getY(){
 		return y;
 	}
@@ -150,7 +162,7 @@ public class Spielfeld implements Serializable{
 		}
 		return zahl;
 	}
-	
+	@XmlTransient
 	public void getF(){
 	 System.out.println(farbe());
 		
@@ -182,15 +194,5 @@ public class Spielfeld implements Serializable{
 
 		}
 		return s;
-	}
-	public static void main(String[] args) {
-		
-		Spielbrett brett =new Spielbrett();
-		Spielfeld  f = new Spielfeld(brett, "A2",false);
-		Spielfeld  f1 = new Spielfeld(brett, "A1",true);
-		f.getF();
-		System.out.println(f);
-		f1.getF();
-		System.out.println(f1);
 	}
 }

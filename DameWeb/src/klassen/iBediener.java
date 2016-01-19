@@ -1,9 +1,5 @@
 package klassen;
 
-import gui.Spieler1AuswahlDialog;
-
-import java.awt.Component;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public interface iBediener {
@@ -16,20 +12,12 @@ public interface iBediener {
 
 
     void gibKoordinate(String s);
-//    void laufen(String aktPos, String zielPos, String figurId);
     Spielfigur gebeFigur(String figurId);
-    void belegungCSV();
-
-    
     void zugBeenden();
-  
     void schlagen(String aktPos, String gegnerPos, String zielPos);
-
-
     boolean hatGewonnen();
     public Spieler getSpieler1();
     public Spieler getSpieler2();
-	
 	String farbePlayer();
 	void laufen(String aktPos, String zielPos);
 	Spieler getSpielerAmZug();
@@ -53,9 +41,12 @@ public interface iBediener {
 	String convertPos2(int s);
 	String gibFarbeSession();
 	Spielbrett getSpielbrett();
-	boolean menschDrin();
-	int bestandSpielerlist();
-
+	public boolean menschDrin();
+	int getSpielerAnz();
+	void setSessionId(String sessionId);
+	String getSessionId();
+	String getRealPath();
+	void setRealPath(String realPath);
 
 
     

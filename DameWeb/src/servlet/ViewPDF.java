@@ -9,6 +9,7 @@ import java.io.OutputStream;
 //import java.net.MalformedURLException;
 //import java.net.URL;
 
+
 //import javax.servlet.RequestDispatcher;
 //import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -40,10 +41,10 @@ public class ViewPDF extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		String pfad=System.getProperty("user.home");
 		response.setContentType( "application/pdf" );
 		String file=(String)request.getSession().getAttribute("filePDF");
-		String fileURL = "C:/Users/Katherina/Desktop"+file+".pdf";	
+		String fileURL = pfad+"/Desktop/"+file+".pdf";	
 		
 		if(file==null){
 			response.sendRedirect("/DameLokalWeb/Error.jsp");

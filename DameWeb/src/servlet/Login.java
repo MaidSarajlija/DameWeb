@@ -23,6 +23,7 @@ public class Login extends HttpServlet {
 	
 	private static final String Wait = "/Wait.jsp";
 	private static final String brett = "/Brett.jsp";
+	private static final String LoginGegner = "/LoginGegner.jsp";
 	
 	
 
@@ -50,6 +51,7 @@ public class Login extends HttpServlet {
 		ServletContext sc = this.getServletContext();
 		RequestDispatcher rd = sc.getRequestDispatcher(Wait);
 		RequestDispatcher rd1 = sc.getRequestDispatcher(brett);
+		RequestDispatcher rd2 = sc.getRequestDispatcher(LoginGegner);
 		// gegner
 		String typ2=request.getParameter("spielerart2");
 		request.getSession().setAttribute("gegner", typ2);
@@ -72,9 +74,14 @@ public class Login extends HttpServlet {
 			this.brettRufen(request, response);
 			
 			rd1.forward(request, response);
+		}
+		// --- ki gegen mensch 1 browser 
+		else if(typ1.equals("KI")&&typ2.equals("Mensch")){
+			rd2.forward(request, response);
 		}else{
 			rd.forward(request, response);
 		}
+		
 
 		
 		
@@ -97,6 +104,9 @@ public class Login extends HttpServlet {
 	}
 	
 	public void brettRufen(HttpServletRequest request, HttpServletResponse response){
+		ServletContext sc = this.getServletContext();
+		String ab=sc.getRealPath("/");
+		Index.getGame().setRealPath(ab);
 		String s="";
 		if(Index.getGame().hatGewonnen()==true){
 			s+="<input disabled id='refresh' type = 'submit' value = 'Lauf Ki' name='laufKi'>";
